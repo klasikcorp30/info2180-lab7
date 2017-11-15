@@ -1,31 +1,18 @@
 <?php
 
-$host = "localhost";
-$username = "klasikcorp";
-$password = "curry30";
-$dbname = "world";
+$host = getenv('IP');
+$username = getenv('C9_USER');
+$password = '';
+$dbname = 'world';
 
-$conn = mysqli_connect($host, $username, $password, $dbname);
-//create a database connection
+$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
-//Getting query parameter
+$stmt = $conn->query("SELECT * FROM countries");
 
-$country = $_GET['country'];
-
-$query = "SELECT * FROM countries"; //Perform database query
-
-$results = mysqli_query($conn, $query);
-
-
-
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 echo '<ul>';
-while ($array = mysqli_fetch_assoc($results)) {
-	
-  echo '<li>' . $array["$country"] . ' is ruled by ' . $array['head_of_state'] . '</li>';
+foreach ($results as $row) {
+  echo '<li>' . $row['name'] . ' is ruled by ' . $row['head_of_state'] . '</li>';
 }
-echo '</ul>';
-
-
-
-echo "<p style> $country </> ";
+echo '</ul>';s
